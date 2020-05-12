@@ -50,6 +50,14 @@
     <!-- Needed for full screen intent in notifications -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
+    <!-- Can send and receive SMSes -->
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_MMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -76,7 +84,9 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MESSAGING" />
             </intent-filter>
+
         </activity>
 
         <!-- Main activities -->
@@ -93,10 +103,16 @@
                 <data android:scheme="sip" />
             </intent-filter>
             <intent-filter>
+                <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="sip" />
                 <data android:scheme="imto" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
             </intent-filter>
             <intent-filter>
                 <action android:name="org.linphone.intent.action.CallLaunched" />
@@ -266,6 +282,20 @@
             android:name=".receivers.AccountEnableReceiver">
             <intent-filter>
                 <action android:name="org.linphone.intent.ACCOUNTACTIVATE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.MmsWapPushDeliverReceiver"
+                  android:permission="android.permission.BROADCAST_WAP_PUSH">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+                <data android:mimeType="application/vnd.wap.mms-message" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.SmsDeliverReceiver"
+                  android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
         </receiver>
 
