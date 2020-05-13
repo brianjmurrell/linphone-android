@@ -263,6 +263,21 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".QuickResponseService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+            </intent-filter>
+        </service>
+
         <!-- Receivers -->
 
         <receiver android:name=".receivers.BootReceiver">
@@ -286,8 +301,9 @@
         </receiver>
 
         <receiver android:name=".receivers.MmsWapPushDeliverReceiver"
+                  android:exported="true"
                   android:permission="android.permission.BROADCAST_WAP_PUSH">
-            <intent-filter>
+            <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
                 <data android:mimeType="application/vnd.wap.mms-message" />
             </intent-filter>
